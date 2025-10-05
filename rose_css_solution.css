@@ -1,0 +1,32 @@
+
+/* Simple animated rose using CSS filters */
+.instagram-avatar-rose {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+    margin-right: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+}
+
+.instagram-avatar-rose::before {
+    content: '🌹';
+    font-size: 20px;
+    animation: rosePulse 2s ease-in-out infinite;
+    filter: sepia(1) saturate(1.8) hue-rotate(320deg) brightness(0.9) contrast(1.1);
+}
+
+@keyframes rosePulse {
+    0%, 100% { 
+        transform: scale(1); 
+        filter: sepia(1) saturate(1.8) hue-rotate(320deg) brightness(0.9) contrast(1.1);
+    }
+    50% { 
+        transform: scale(1.1); 
+        filter: sepia(1) saturate(2.2) hue-rotate(325deg) brightness(1.1) contrast(1.2);
+    }
+}
