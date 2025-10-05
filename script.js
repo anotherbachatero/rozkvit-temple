@@ -16,41 +16,55 @@ function initVideoHover() {
     const heroImage = document.querySelector('.hero-image');
     
     if (video && fallbackImage && heroImage) {
+        let videoLoaded = false;
+        let hoverTimeout;
+        
         // Initially hide video and show fallback image
         video.style.display = 'none';
+        video.style.opacity = '0';
         fallbackImage.style.display = 'block';
+        fallbackImage.style.opacity = '1';
         
         // Set video to first frame
         video.currentTime = 0;
         video.pause();
         
-        // Handle video loading
+        // Handle video loading with smooth transition
         video.addEventListener('canplaythrough', function() {
-            // Video can play through, show video and hide fallback
-            fallbackImage.style.display = 'none';
-            video.style.display = 'block';
+            videoLoaded = true;
+            // Smooth transition from fallback to video
+            fallbackImage.style.opacity = '0';
+            setTimeout(() => {
+                fallbackImage.style.display = 'none';
+                video.style.display = 'block';
+                video.style.opacity = '1';
+            }, 150);
         });
         
         video.addEventListener('error', function() {
             // Video failed to load, keep fallback image
             console.log('Video failed to load, using fallback image');
-            fallbackImage.style.display = 'block';
-            video.style.display = 'none';
+            videoLoaded = false;
         });
         
-        // Play on hover (only if video is loaded)
+        // Debounced hover handlers to prevent flashing
         heroImage.addEventListener('mouseenter', function() {
-            if (video.style.display !== 'none') {
-                video.play();
-            }
+            clearTimeout(hoverTimeout);
+            hoverTimeout = setTimeout(() => {
+                if (videoLoaded && video.style.display !== 'none') {
+                    video.play();
+                }
+            }, 50);
         });
         
-        // Pause and reset on mouse leave
         heroImage.addEventListener('mouseleave', function() {
-            if (video.style.display !== 'none') {
-                video.pause();
-                video.currentTime = 0;
-            }
+            clearTimeout(hoverTimeout);
+            hoverTimeout = setTimeout(() => {
+                if (videoLoaded && video.style.display !== 'none') {
+                    video.pause();
+                    video.currentTime = 0;
+                }
+            }, 50);
         });
         
         // Start loading video metadata
