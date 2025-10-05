@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initAnimations();
     initModals();
     initVideoHover();
+    initBackgroundMusic();
 });
 
 // Video loading and hover-to-play functionality
@@ -770,4 +771,94 @@ function askQuickQuestion(question) {
     }
 }
 
+// Background Music Functions
+function initBackgroundMusic() {
+    const music = document.getElementById('backgroundMusic');
+    const playPauseBtn = document.getElementById('playPauseBtn');
+    const playPauseIcon = document.getElementById('playPauseIcon');
+    const volumeSlider = document.getElementById('volumeSlider');
+    const musicHint = document.getElementById('musicHint');
+    
+    if (music && playPauseBtn && playPauseIcon && volumeSlider) {
+        // Set initial volume
+        music.volume = 0.3;
+        
+        let musicStarted = false;
+        
+        // Try multiple approaches to start music automatically
+        const startMusic = () => {
+            music.play().then(() => {
+                console.log('Music started successfully');
+                musicStarted = true;
+                if (musicHint) {
+                    musicHint.classList.remove('show');
+                }
+            }).catch(error => {
+                console.log('Autoplay prevented:', error);
+                if (!musicStarted && musicHint) {
+                    musicHint.classList.add('show');
+                }
+            });
+        };
+        
+        // Try to start immediately
+        startMusic();
+        
+        // Try again after a short delay
+        setTimeout(startMusic, 1000);
+        
+        // Try on any user interaction
+        const tryStartOnInteraction = () => {
+            music.play().then(() => {
+                musicStarted = true;
+                if (musicHint) {
+                    musicHint.classList.remove('show');
+                }
+            }).catch(e => console.log('Still cannot autoplay:', e));
+        };
+        
+        // Listen for any user interaction to start music
+        ['click', 'touchstart', 'keydown', 'mousemove'].forEach(event => {
+            document.addEventListener(event, tryStartOnInteraction, { once: true });
+        });
+        
+        // Update play/pause button based on music state
+        music.addEventListener('play', function() {
+            playPauseIcon.className = 'fas fa-pause';
+        });
+        
+        music.addEventListener('pause', function() {
+            playPauseIcon.className = 'fas fa-play';
+        });
+        
+        // Handle volume changes
+        volumeSlider.addEventListener('input', function() {
+            music.volume = this.value / 100;
+        });
+    }
+}
+
+function toggleMusic() {
+    const music = document.getElementById('backgroundMusic');
+    const playPauseIcon = document.getElementById('playPauseIcon');
+    
+    if (music && playPauseIcon) {
+        if (music.paused) {
+            music.play().catch(error => {
+                console.log('Play failed:', error);
+            });
+        } else {
+            music.pause();
+        }
+    }
+}
+
+function adjustVolume() {
+    const music = document.getElementById('backgroundMusic');
+    const volumeSlider = document.getElementById('volumeSlider');
+    
+    if (music && volumeSlider) {
+        music.volume = volumeSlider.value / 100;
+    }
+}
 
