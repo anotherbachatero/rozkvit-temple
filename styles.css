@@ -723,20 +723,19 @@ h1, h2, h3, h4, h5, h6 {
     justify-content: center;
 }
 
-.about-placeholder {
+.about-image-main {
     width: 250px;
     height: 250px;
-    background: var(--gradient-primary);
+    object-fit: cover;
     border-radius: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     box-shadow: var(--shadow-large);
+    border: 3px solid rgba(244, 234, 236, 0.8);
+    transition: all 0.3s ease;
 }
 
-.about-placeholder i {
-    font-size: 4rem;
-    color: var(--text-white);
+.about-image-main:hover {
+    transform: scale(1.02);
+    box-shadow: 0 25px 50px rgba(181, 159, 153, 0.4);
 }
 
 /* Services Section */
