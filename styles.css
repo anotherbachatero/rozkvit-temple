@@ -1196,6 +1196,131 @@ h1, h2, h3, h4, h5, h6 {
     pointer-events: none;
 }
 
+/* Tiana Instagram Post */
+.tiana-instagram-post {
+    position: relative;
+    background: #FFF;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 8px;
+    box-shadow: 0 0 1px 0 rgba(0,0,0,0.5), 0 1px 10px 0 rgba(0,0,0,0.15);
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.tiana-instagram-post:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+}
+
+.tiana-instagram-image {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    filter: none;
+    display: block;
+}
+
+.instagram-post-overlay {
+    padding: 16px;
+    background: white;
+}
+
+.instagram-post-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.instagram-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+    margin-right: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.instagram-avatar::before {
+    content: '🌹';
+    font-size: 20px;
+}
+
+.instagram-user-info {
+    flex-grow: 1;
+}
+
+.instagram-username {
+    font-weight: 600;
+    font-size: 14px;
+    color: #262626;
+    margin-bottom: 2px;
+}
+
+.instagram-location {
+    font-size: 12px;
+    color: #8e8e8e;
+}
+
+.instagram-post-content {
+    margin-bottom: 12px;
+}
+
+.instagram-post-content p {
+    font-size: 14px;
+    line-height: 1.4;
+    color: #262626;
+    margin: 0;
+}
+
+.instagram-post-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: #8e8e8e;
+}
+
+.instagram-likes {
+    font-weight: 600;
+}
+
+@keyframes gentle-unicorn-float {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg) scale(1);
+    }
+    25% {
+        transform: translateY(-15px) rotate(2deg) scale(1.02);
+    }
+    50% {
+        transform: translateY(-20px) rotate(0deg) scale(1.05);
+    }
+    75% {
+        transform: translateY(-15px) rotate(-2deg) scale(1.02);
+    }
+}
+
+@keyframes mystical-glow {
+    0%, 100% {
+        opacity: 0.3;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+        opacity: 0.6;
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+}
+
+@keyframes mystical-rotate {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
 .testimonials-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -1268,6 +1393,8 @@ h1, h2, h3, h4, h5, h6 {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 4rem;
+    position: relative;
+    z-index: 2;
 }
 
 .contact-info h3 {
@@ -1550,6 +1677,10 @@ h1, h2, h3, h4, h5, h6 {
 
     .testimonials-grid {
         grid-template-columns: 1fr;
+    }
+
+    .tiana-instagram-image {
+        height: 300px;
     }
 
     .contact-content {
