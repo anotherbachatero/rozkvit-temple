@@ -48,10 +48,20 @@
                     </div>
                 </div>
             <div class="hero-image">
-                <video muted loop playsinline class="hero-main-video" id="heroVideo" poster="tiana_and_the_dragon.png">
+                <!-- Fallback image - shown while video loads -->
+                <img src="tiana_and_the_dragon.png" alt="Tiana and the Dragon - Sacred Journey" class="hero-fallback-image" id="fallbackImage">
+                
+                <!-- Video element - hidden until loaded -->
+                <video muted loop playsinline class="hero-main-video" id="heroVideo" preload="metadata">
                     <source src="levitation.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
+                
+                <!-- Loading indicator -->
+                <div class="video-loading" id="videoLoading">
+                    <div class="loading-spinner"></div>
+                    <p>Loading sacred journey...</p>
+                </div>
             </div>
         </div>
         <div class="hero-waves">

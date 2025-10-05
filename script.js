@@ -9,26 +9,61 @@ document.addEventListener('DOMContentLoaded', function() {
     initVideoHover();
 });
 
-// Video hover-to-play functionality
+// Video loading and hover-to-play functionality
 function initVideoHover() {
     const video = document.getElementById('heroVideo');
+    const fallbackImage = document.getElementById('fallbackImage');
+    const videoLoading = document.getElementById('videoLoading');
     const heroImage = document.querySelector('.hero-image');
     
-    if (video && heroImage) {
+    if (video && fallbackImage && heroImage) {
+        // Initially hide video and show fallback image
+        video.style.display = 'none';
+        fallbackImage.style.display = 'block';
+        videoLoading.style.display = 'flex';
+        
         // Set video to first frame
         video.currentTime = 0;
         video.pause();
         
-        // Play on hover
+        // Handle video loading
+        video.addEventListener('loadeddata', function() {
+            // Video metadata loaded, hide loading indicator
+            videoLoading.classList.add('hidden');
+        });
+        
+        video.addEventListener('canplaythrough', function() {
+            // Video can play through, show video and hide fallback
+            fallbackImage.style.display = 'none';
+            video.style.display = 'block';
+            videoLoading.classList.add('hidden');
+        });
+        
+        video.addEventListener('error', function() {
+            // Video failed to load, keep fallback image
+            console.log('Video failed to load, using fallback image');
+            fallbackImage.style.display = 'block';
+            video.style.display = 'none';
+            videoLoading.classList.add('hidden');
+        });
+        
+        // Play on hover (only if video is loaded)
         heroImage.addEventListener('mouseenter', function() {
-            video.play();
+            if (video.style.display !== 'none') {
+                video.play();
+            }
         });
         
         // Pause and reset on mouse leave
         heroImage.addEventListener('mouseleave', function() {
-            video.pause();
-            video.currentTime = 0;
+            if (video.style.display !== 'none') {
+                video.pause();
+                video.currentTime = 0;
+            }
         });
+        
+        // Start loading video metadata
+        video.load();
     }
 }
 
