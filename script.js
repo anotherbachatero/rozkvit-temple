@@ -19,6 +19,9 @@ function initVideoHover() {
     if (video && fallbackImage && heroImage) {
         let videoLoaded = false;
         let hoverTimeout;
+        let isVideoPlaying = false;
+        let hasLeftArea = true; // Track if user has left the video area
+        let videoStarted = false; // Track if video has started playing
         
         // Initially hide video and show fallback image
         video.style.display = 'none';
@@ -48,25 +51,88 @@ function initVideoHover() {
             videoLoaded = false;
         });
         
-        // Debounced hover handlers to prevent flashing
-        heroImage.addEventListener('mouseenter', function() {
-            clearTimeout(hoverTimeout);
-            hoverTimeout = setTimeout(() => {
-                if (videoLoaded && video.style.display !== 'none') {
-                    video.play();
-                }
-            }, 50);
+        // Handle video end - reset state for next hover cycle
+        video.addEventListener('ended', function() {
+            console.log('🎬 Video completed - ready for next hover cycle');
+            isVideoPlaying = false;
+            videoStarted = false;
+            video.currentTime = 0; // Reset to beginning
         });
         
+        // Handle video start
+        video.addEventListener('play', function() {
+            isVideoPlaying = true;
+            videoStarted = true;
+            console.log('🎬 Video started playing');
+        });
+        
+        // Handle video pause (if manually paused)
+        video.addEventListener('pause', function() {
+            isVideoPlaying = false;
+            console.log('⏸️ Video paused');
+        });
+        
+        // Hover enter: Start video only if conditions are met
+        heroImage.addEventListener('mouseenter', function() {
+            console.log('🖱️ Mouse entered video area', {
+                videoLoaded,
+                isVideoPlaying,
+                hasLeftArea,
+                videoStarted
+            });
+            
+            // Only start video if:
+            // 1. Video is loaded
+            // 2. Video is not currently playing
+            // 3. User has left the area since last interaction (or it's first time)
+            // 4. Video has not started yet (or has completed)
+            if (videoLoaded && 
+                !isVideoPlaying && 
+                hasLeftArea && 
+                !videoStarted) {
+                
+                clearTimeout(hoverTimeout);
+                hoverTimeout = setTimeout(() => {
+                    console.log('🎬 Starting video on hover');
+                    video.currentTime = 0; // Ensure we start from beginning
+                    video.play();
+                }, 50);
+            } else {
+                console.log('🚫 Video start conditions not met');
+            }
+        });
+        
+        // Hover leave: Mark that user has left the area
         heroImage.addEventListener('mouseleave', function() {
-            clearTimeout(hoverTimeout);
-            hoverTimeout = setTimeout(() => {
-                if (videoLoaded && video.style.display !== 'none') {
+            console.log('🖱️ Mouse left video area');
+            hasLeftArea = true;
+            
+            // Don't pause the video - let it complete naturally
+            // Only pause if video hasn't started yet
+            if (!videoStarted) {
+                clearTimeout(hoverTimeout);
+                hoverTimeout = setTimeout(() => {
+                    if (videoLoaded && video.style.display !== 'none' && !isVideoPlaying) {
+                        video.pause();
+                        video.currentTime = 0;
+                    }
+                }, 50);
+            }
+        });
+        
+        // Additional safety: Reset state if video somehow gets stuck
+        setInterval(() => {
+            if (videoLoaded && !video.paused && video.currentTime > 0) {
+                // Check if video has been playing for too long (more than video duration)
+                if (video.currentTime >= video.duration || video.currentTime >= 10) {
+                    console.log('🔄 Video playing too long - forcing reset');
                     video.pause();
                     video.currentTime = 0;
+                    isVideoPlaying = false;
+                    videoStarted = false;
                 }
-            }, 50);
-        });
+            }
+        }, 1000); // Check every second
         
         // Start loading video metadata
         video.load();
