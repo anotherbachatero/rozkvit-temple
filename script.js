@@ -862,3 +862,19 @@ function adjustVolume() {
     }
 }
 
+// PayPal Donation System - Hosted Button (No JavaScript needed!)
+function initDonationSystem() {
+    // PayPal hosted button works automatically - no JavaScript needed!
+    console.log('PayPal donation system ready - hosted button active');
+}
+
+
+// Initialize everything when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    initNavigation();
+    initContactForm();
+    initVideoHover();
+    initBackgroundMusic();
+    initDonationSystem();
+});
+

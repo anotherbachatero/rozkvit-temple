@@ -1442,6 +1442,397 @@ h1, h2, h3, h4, h5, h6 {
     }
 }
 
+/* Sacred Support Section */
+.sacred-support-section {
+    background: linear-gradient(135deg, rgba(244, 234, 236, 0.2), rgba(181, 159, 153, 0.1));
+    padding: 100px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.sacred-support-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 20% 80%, rgba(244, 234, 236, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(181, 159, 153, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(244, 234, 236, 0.2) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.support-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+}
+
+.support-intro {
+    text-align: center;
+}
+
+.meditation-image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.meditation-image {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    object-fit: contain;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(181, 159, 153, 0.3);
+    border: 3px solid rgba(244, 234, 236, 0.8);
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, rgba(244, 234, 236, 0.1), rgba(181, 159, 153, 0.05));
+    display: block;
+}
+
+.meditation-image:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 25px 50px rgba(181, 159, 153, 0.4);
+}
+
+.donation-options {
+    background: rgba(244, 234, 236, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 40px;
+    border: 2px solid rgba(244, 234, 236, 0.6);
+    box-shadow: 0 20px 40px rgba(181, 159, 153, 0.2);
+}
+
+.donation-amounts h4 {
+    font-family: 'Cinzel', serif;
+    font-size: 22px;
+    color: var(--text-dark);
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.amount-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.amount-btn {
+    background: linear-gradient(135deg, var(--primary-beige), rgba(244, 234, 236, 0.8));
+    border: 2px solid rgba(244, 234, 236, 0.6);
+    border-radius: 15px;
+    padding: 20px 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Libre Baskerville', serif;
+    font-size: 14px;
+    color: var(--text-dark);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.amount-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(244, 234, 236, 0.4), transparent);
+    transition: left 0.5s ease;
+}
+
+.amount-btn:hover::before {
+    left: 100%;
+}
+
+.amount-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(181, 159, 153, 0.3);
+    border-color: var(--dusty-rose);
+}
+
+.amount-btn.selected {
+    background: linear-gradient(135deg, var(--dusty-rose), var(--rose-pink));
+    border-color: var(--primary-rose);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(181, 159, 153, 0.4);
+}
+
+.amount-btn .amount {
+    display: block;
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 8px;
+    font-family: 'Cinzel', serif;
+}
+
+.amount-btn.custom-amount {
+    grid-column: span 2;
+    background: linear-gradient(135deg, var(--muted-pink), var(--dusty-rose));
+    color: white;
+}
+
+.custom-amount-input {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.custom-amount-input label {
+    display: block;
+    font-family: 'Libre Baskerville', serif;
+    font-size: 16px;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+}
+
+.custom-amount-input input {
+    width: 200px;
+    padding: 12px 20px;
+    border: 2px solid rgba(244, 234, 236, 0.6);
+    border-radius: 10px;
+    font-size: 16px;
+    text-align: center;
+    background: rgba(244, 234, 236, 0.8);
+    color: var(--text-dark);
+    transition: all 0.3s ease;
+}
+
+.custom-amount-input input:focus {
+    outline: none;
+    border-color: var(--dusty-rose);
+    box-shadow: 0 0 0 3px rgba(181, 159, 153, 0.2);
+}
+
+.donation-action {
+    text-align: center;
+}
+
+.btn-donation {
+    background: linear-gradient(135deg, var(--primary-rose), var(--dusty-rose));
+    color: white;
+    border: none;
+    padding: 18px 40px;
+    border-radius: 50px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 10px 25px rgba(181, 159, 153, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-donation::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.btn-donation:hover::before {
+    left: 100%;
+}
+
+.btn-donation:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(181, 159, 153, 0.4);
+}
+
+.btn-donation i {
+    font-size: 20px;
+}
+
+.donation-note {
+    font-size: 12px;
+    color: var(--text-medium);
+    margin-top: 15px;
+    opacity: 0.8;
+}
+
+/* PayPal Hosted Button Styling */
+.paypal-hosted-button {
+    display: flex;
+    justify-content: center;
+    margin: 30px 0;
+}
+
+.donation-card {
+    background: linear-gradient(135deg, rgba(244, 234, 236, 0.95), rgba(255, 255, 255, 0.9));
+    border-radius: 25px;
+    padding: 40px 30px;
+    border: 3px solid rgba(244, 234, 236, 0.8);
+    box-shadow: 0 20px 40px rgba(181, 159, 153, 0.3);
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.donation-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 30% 20%, rgba(244, 234, 236, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(181, 159, 153, 0.2) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.donation-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 25px 50px rgba(181, 159, 153, 0.4);
+}
+
+.donation-header {
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 2;
+}
+
+.donation-icon {
+    font-size: 32px;
+    color: var(--primary-rose);
+    margin-bottom: 10px;
+    animation: heartPulse 2s ease-in-out infinite;
+}
+
+@keyframes heartPulse {
+    0%, 100% {
+        transform: scale(1);
+        color: var(--primary-rose);
+    }
+    50% {
+        transform: scale(1.1);
+        color: var(--dusty-rose);
+    }
+}
+
+.donation-header h5 {
+    font-family: 'Cinzel', serif;
+    font-size: 24px;
+    color: var(--text-dark);
+    margin: 0;
+    font-weight: 600;
+}
+
+.donation-description-inline {
+    margin-bottom: 25px;
+    position: relative;
+    z-index: 2;
+}
+
+.donation-description-inline p {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 16px;
+    color: var(--text-medium);
+    margin: 0;
+    font-style: italic;
+}
+
+.paypal-hosted-button form {
+    margin: 0;
+    position: relative;
+    z-index: 2;
+}
+
+.paypal-button-image {
+    max-width: 100%;
+    height: auto;
+    transition: all 0.3s ease;
+    border-radius: 15px;
+    filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.1));
+}
+
+.paypal-button-image:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.15));
+}
+
+.donation-footer {
+    margin-top: 20px;
+    position: relative;
+    z-index: 2;
+}
+
+.security-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(244, 234, 236, 0.8);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    color: var(--text-medium);
+    font-family: 'Libre Baskerville', serif;
+    border: 1px solid rgba(244, 234, 236, 0.6);
+}
+
+.security-badge i {
+    color: var(--dusty-rose);
+    font-size: 14px;
+}
+
+.donation-description {
+    margin-top: 25px;
+    text-align: center;
+}
+
+.donation-description p {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 16px;
+    color: var(--text-medium);
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.donation-description .donation-note {
+    font-size: 14px;
+    color: var(--text-medium);
+    opacity: 0.8;
+    font-style: italic;
+}
+
+
+
+/* Mobile Responsive for Donation Section */
+@media (max-width: 768px) {
+    .support-content {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+    
+    .donation-options {
+        padding: 25px;
+    }
+    
+    .donation-card {
+        padding: 30px 20px;
+        margin: 20px 0;
+    }
+}
+
 @keyframes gentle-unicorn-float {
     0%, 100% {
         transform: translateY(0px) rotate(0deg) scale(1);
