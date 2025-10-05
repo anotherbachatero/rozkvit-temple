@@ -538,8 +538,8 @@
     </div>
 
     <!-- Background Music -->
-    <audio id="backgroundMusic" loop preload="auto" autoplay volume="0.3">
-        <source src="bali-music.mp3" type="audio/mpeg">
+    <audio id="backgroundMusic" loop preload="auto" volume="0.3">
+        <source src="bali-music-1.mp3" type="audio/mpeg" id="audioSource">
         Your browser does not support the audio element.
     </audio>
 
@@ -549,7 +549,13 @@
             <i class="fas fa-play" id="playPauseIcon"></i>
         </button>
         <div class="music-info">
-            <span class="music-title">Sacred Bali Music</span>
+            <div class="music-track-selector">
+                <label for="trackSelector" class="track-label">Track:</label>
+                <select id="trackSelector" onchange="switchTrack()" class="track-select">
+                    <option value="bali-music-1.mp3">Sacred Bali Music 1</option>
+                    <option value="bali-music-2.mp3">Sacred Bali Music 2</option>
+                </select>
+            </div>
             <div class="music-volume">
                 <i class="fas fa-volume-down"></i>
                 <input type="range" id="volumeSlider" min="0" max="100" value="30" onchange="adjustVolume()">

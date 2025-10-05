@@ -771,7 +771,9 @@ function askQuickQuestion(question) {
     }
 }
 
-// Background Music Functions
+// Background Music Functions - Manual State Control
+let musicPlaying = false; // Manual state tracking
+
 function initBackgroundMusic() {
     const music = document.getElementById('backgroundMusic');
     const playPauseBtn = document.getElementById('playPauseBtn');
@@ -783,58 +785,23 @@ function initBackgroundMusic() {
         // Set initial volume
         music.volume = 0.3;
         
-        let musicStarted = false;
-        
-        // Try multiple approaches to start music automatically
-        const startMusic = () => {
-            music.play().then(() => {
-                console.log('Music started successfully');
-                musicStarted = true;
-                if (musicHint) {
-                    musicHint.classList.remove('show');
-                }
-            }).catch(error => {
-                console.log('Autoplay prevented:', error);
-                if (!musicStarted && musicHint) {
-                    musicHint.classList.add('show');
-                }
-            });
-        };
-        
-        // Try to start immediately
-        startMusic();
-        
-        // Try again after a short delay
-        setTimeout(startMusic, 1000);
-        
-        // Try on any user interaction
-        const tryStartOnInteraction = () => {
-            music.play().then(() => {
-                musicStarted = true;
-                if (musicHint) {
-                    musicHint.classList.remove('show');
-                }
-            }).catch(e => console.log('Still cannot autoplay:', e));
-        };
-        
-        // Listen for any user interaction to start music
-        ['click', 'touchstart', 'keydown', 'mousemove'].forEach(event => {
-            document.addEventListener(event, tryStartOnInteraction, { once: true });
-        });
-        
-        // Update play/pause button based on music state
-        music.addEventListener('play', function() {
-            playPauseIcon.className = 'fas fa-pause';
-        });
-        
-        music.addEventListener('pause', function() {
-            playPauseIcon.className = 'fas fa-play';
-        });
+        // Initialize button to show play icon (music starts paused)
+        musicPlaying = false;
+        playPauseIcon.className = 'fas fa-play';
+        console.log('🎵 Music system initialized - Button shows: PLAY (▶️)');
         
         // Handle volume changes
         volumeSlider.addEventListener('input', function() {
             music.volume = this.value / 100;
         });
+        
+        // Show hint that music is available
+        if (musicHint) {
+            musicHint.classList.add('show');
+            setTimeout(() => {
+                musicHint.classList.remove('show');
+            }, 3000);
+        }
     }
 }
 
@@ -843,12 +810,48 @@ function toggleMusic() {
     const playPauseIcon = document.getElementById('playPauseIcon');
     
     if (music && playPauseIcon) {
-        if (music.paused) {
-            music.play().catch(error => {
-                console.log('Play failed:', error);
+        console.log('Toggle clicked - Manual state:', musicPlaying ? 'PLAYING' : 'PAUSED');
+        
+        if (!musicPlaying) {
+            // Start music
+            console.log('🎵 Starting music...');
+            music.play().then(() => {
+                musicPlaying = true;
+                console.log('Before icon change - current class:', playPauseIcon.className);
+                // Font Awesome SVG framework fix: replace entire element
+                const parent = playPauseIcon.parentNode;
+                const newIcon = document.createElement('i');
+                newIcon.className = 'fas fa-pause';
+                newIcon.id = 'playPauseIcon';
+                parent.replaceChild(newIcon, playPauseIcon);
+                console.log('After icon change - new element created');
+                console.log('Icon element found:', !!playPauseIcon);
+                console.log('✅ Music started - Button shows: PAUSE (||)');
+            }).catch(error => {
+                console.log('❌ Play failed:', error);
+                musicPlaying = false;
+                // Font Awesome SVG framework fix: replace entire element
+                const parent = playPauseIcon.parentNode;
+                const newIcon = document.createElement('i');
+                newIcon.className = 'fas fa-play';
+                newIcon.id = 'playPauseIcon';
+                parent.replaceChild(newIcon, playPauseIcon);
+                console.log('❌ Play failed - Button shows: PLAY (▶️)');
             });
         } else {
+            // Pause music
+            console.log('⏸️ Pausing music...');
             music.pause();
+            musicPlaying = false;
+            console.log('Before pause icon change - current class:', playPauseIcon.className);
+            // Font Awesome SVG framework fix: replace entire element
+            const parent = playPauseIcon.parentNode;
+            const newIcon = document.createElement('i');
+            newIcon.className = 'fas fa-play';
+            newIcon.id = 'playPauseIcon';
+            parent.replaceChild(newIcon, playPauseIcon);
+            console.log('After pause icon change - new element created');
+            console.log('✅ Music paused - Button shows: PLAY (▶️)');
         }
     }
 }
@@ -860,6 +863,90 @@ function adjustVolume() {
     if (music && volumeSlider) {
         music.volume = volumeSlider.value / 100;
     }
+}
+
+function switchTrack() {
+    const music = document.getElementById('backgroundMusic');
+    const audioSource = document.getElementById('audioSource');
+    const trackSelector = document.getElementById('trackSelector');
+    const playPauseIcon = document.getElementById('playPauseIcon');
+    
+    if (music && audioSource && trackSelector) {
+        const currentTime = music.currentTime;
+        const wasPlaying = !music.paused;
+        
+        // Get the selected track
+        const newTrack = trackSelector.value;
+        console.log('🎵 Switching to track:', newTrack);
+        
+        // Update the audio source
+        audioSource.src = newTrack;
+        
+        // Reload the audio element
+        music.load();
+        
+        // Restore playback state
+        if (wasPlaying) {
+            music.currentTime = currentTime;
+            music.play().then(() => {
+                console.log('✅ Track switched and resumed playing');
+                musicPlaying = true;
+                // Font Awesome SVG framework fix: replace entire element
+                const parent = playPauseIcon.parentNode;
+                const newIcon = document.createElement('i');
+                newIcon.className = 'fas fa-pause';
+                newIcon.id = 'playPauseIcon';
+                parent.replaceChild(newIcon, playPauseIcon);
+            }).catch(error => {
+                console.log('❌ Could not resume playback:', error);
+                musicPlaying = false;
+                // Font Awesome SVG framework fix: replace entire element
+                const parent = playPauseIcon.parentNode;
+                const newIcon = document.createElement('i');
+                newIcon.className = 'fas fa-play';
+                newIcon.id = 'playPauseIcon';
+                parent.replaceChild(newIcon, playPauseIcon);
+            });
+        } else {
+            console.log('✅ Track switched (paused)');
+            musicPlaying = false;
+            // Font Awesome SVG framework fix: replace entire element
+            const parent = playPauseIcon.parentNode;
+            const newIcon = document.createElement('i');
+            newIcon.className = 'fas fa-play';
+            newIcon.id = 'playPauseIcon';
+            parent.replaceChild(newIcon, playPauseIcon);
+        }
+    }
+}
+
+// Contact Form Functions
+function initContactForm() {
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(contactForm);
+            const name = formData.get('name');
+            const email = formData.get('email');
+            const message = formData.get('message');
+            
+            // Simple validation
+            if (!name || !email || !message) {
+                alert('Please fill in all fields.');
+                return;
+            }
+            
+            // Show success message
+            alert('Thank you for your message! I will get back to you soon.');
+            
+            // Reset form
+            contactForm.reset();
+        });
+    }
+    console.log('Contact form initialized');
 }
 
 // PayPal Donation System - Hosted Button (No JavaScript needed!)
